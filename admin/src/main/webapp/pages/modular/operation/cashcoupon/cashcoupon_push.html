@@ -1,0 +1,46 @@
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/operation/cashcoupon/cashcoupon_push.js"]}){
+<form id="cashcouponPushForm" lay-filter="cashcouponPushForm" class="layui-form model-form">
+    <input name="id" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">代金券名称</label>
+        <div class="layui-input-block">
+            <input name="ccName" type="text" class="layui-input layui-disabled" disabled/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">代金券金额</label>
+        <div class="layui-input-block">
+            <input name="ccMoney" type="text" class="layui-input layui-disabled" disabled/>
+        </div>
+    </div>
+    <div class="layui-form-item" id="startTime1">
+        <label class="layui-form-label">生效时间</label>
+        <div class="layui-input-block">
+            <input id="startTime_input1" name="startTime" placeholder="请输入生效时间" type="text" class="layui-input layui-disabled" disabled/>
+        </div>
+    </div>
+    <div class="layui-form-item" id="startTime2" style="display: none">
+        <label class="layui-form-label">生效时间</label>
+        <div class="layui-input-block">
+            <input id="startTime_input2" name="startTimeNew" placeholder="请输入生效时间" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发放人群</label>
+        <div class="layui-input-block">
+            <input lay-filter="targetPopulation" type="radio" name="targetPopulation" value="ALL_USER" title="全部" checked>
+            <input lay-filter="targetPopulation" type="radio" name="targetPopulation" value="PART_USER" title="部分">
+        </div>
+    </div>
+    <div class="layui-form-item" id="loginNames_div" style="display: none;">
+        <label class="layui-form-label">用户手机号</label>
+        <div class="layui-input-block">
+            <textarea name="loginNames" placeholder="请输入用户手机号，多个用户之间用英文逗号分隔，每次最多100个用户" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item text-right">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>
+    </div>
+</form>
+@}
