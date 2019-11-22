@@ -1,0 +1,40 @@
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/operation/commodity/edit.js"]}){
+<form id="commodityForm" lay-filter="commodityForm" class="layui-form model-form">
+    <input name="commodityId" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="commodityName" placeholder="请输入商品名称" type="text" class="layui-input" lay-verify="required"
+                   style="width: 200px;" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">达标分数<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="grade" placeholder="请输入最低达标分数" type="number" class="layui-input" lay-verify="required"
+                   style="width: 200px;" required/>
+        </div>
+    </div>
+    <input id="commodityImg" name="commodityImg" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品图片</label>
+        <div class="layui-input-block">
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="uploadImg" style="height: 100px;width: 100px;">
+            </div>
+            <button type="button" class="layui-btn" id="upload">商品图片</button>
+            <p id="uploadImgText"></p>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品详情<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <textarea id="commodityDesc" name="commodityDesc" style="display: none;"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item text-right">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>
+    </div>
+</form>
+@}

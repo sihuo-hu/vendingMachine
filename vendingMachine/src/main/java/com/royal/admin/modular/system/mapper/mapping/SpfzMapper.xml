@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.royal.admin.modular.system.mapper.SpfzMapper">
+
+    <select id="selectSpfzAndFloor" resultType="map">
+        SELECT
+        	#{id} AS baseId,
+	        a.b_id AS spfzId,
+	        b.floor_id AS floorId,
+	        b.floor_status AS floorStatus,
+	        b.display_code AS displayCode,
+	        c.commodity_name AS commodityName,
+	        b.grade,
+	        b.stock
+        FROM
+	        b_floor b
+        LEFT JOIN b_spfz a ON INSTR(
+	        a.floor_codes,
+	        b.display_code
+        )
+        AND a.b_id = #{id}
+        LEFT JOIN b_commodity c ON c.commodity_id = b.goods_id
+        WHERE
+	        b.machine_id = #{machinesId}
+        ORDER BY
+	        b.display_code
+    </select>
+
+	<select id="fzList" resultType="com.royal.admin.modular.system.model.GoodsList">
+		SELECT
+			a.difficulty,
+			a.b_id AS id,
+			c.commodity_img AS commodityImg,
+			c.commodity_name AS commodityName,
+			c.commodity_desc AS commodityDesc
+		FROM
+			b_spfz a
+		LEFT JOIN b_floor b ON INSTR(
+			a.floor_codes,
+			b.display_code
+		)
+		LEFT JOIN b_commodity c ON b.goods_id = c.commodity_id
+		WHERE
+			a.machines_id = #{machinesId}
+		AND a.difficulty = #{difficulty}
+		AND b.floor_id IS NOT NULL
+		ORDER BY
+			b.grade DESC
+		LIMIT 1
+	</select>
+</mapper>

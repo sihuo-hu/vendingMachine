@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.royal.admin.modular.system.mapper.OrderMapper">
+
+    <select id="selectRecentlyOne" resultType="com.royal.admin.modular.system.entity.Order">
+        SELECT
+	        b_id AS id,
+	        user_id AS userId,
+	        spfz_id AS spfzId,
+	        good_id AS goodId,
+	        b_status AS STATUS,
+	        create_time AS createTime,
+	        update_time AS updateTime,
+	        grade AS grade,
+	        machines_id AS machinesId,
+	        mountings_id AS mountingsId
+        FROM
+	        b_order
+        WHERE
+	        mountings_id = #{id}
+        ORDER BY create_time DESC
+            LIMIT 1
+    </select>
+
+	<select id="selectOrder" resultType="map">
+		SELECT
+			a.b_id AS id,
+			a.user_id AS userId,
+			b.commodity_name AS commodityName,
+			a.b_status AS status,
+			a.create_time AS createTime,
+			a.update_time AS updateTime,
+			a.grade,
+			c.machines_name AS machinesName,
+			d.b_name AS name,
+			a.deliver_note AS deliverNote,
+			a.order_no AS orderNo
+		FROM
+			b_order a
+		LEFT JOIN b_commodity b ON a.good_id = b.commodity_id
+		LEFT JOIN b_machines c ON a.machines_id = c.machines_id
+		LEFT JOIN b_mountings d ON a.mountings_id = d.b_id
+		<where>
+			<if test="commodityName != null and commodityName != ''">
+				and  INSTR(b.commodity_name,#{commodityName})
+			</if>
+			<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+				and (a.create_time between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+			</if>
+		</where>
+		ORDER BY a.create_time DESC
+
+	</select>
+
+</mapper>

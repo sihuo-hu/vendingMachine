@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.royal.admin.modular.system.mapper.MountingsMapper">
+
+    <select id="selectMountings" resultType="map">
+        SELECT
+            a.b_id AS id,
+            a.b_code AS code,
+            a.b_address AS address,
+            a.b_name AS name,
+            a.create_time AS createTime,
+            a.update_time AS updateTime,
+            a.machines_id AS machinesId,
+            b.machines_name AS machinesName
+        FROM
+            b_mountings a
+        LEFT JOIN b_machines b ON a.machines_id = b.machines_id
+        <where>
+            <if test="name != null and name != ''">
+                and a.b_name like CONCAT('%',#{name},'%'))
+            </if>
+            <if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+                and (a.create_time between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="getMachinesList" resultType="map">
+        select
+        machines_id AS machinesId,
+        machines_name AS machinesName,
+        address,
+        created_at AS createdAt,
+        #{id} AS mountingId
+        from b_machines
+        where online_status = 'ENABLE'
+        order by created_at desc
+    </select>
+
+
+</mapper>

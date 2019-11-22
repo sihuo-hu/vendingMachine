@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.royal.admin.modular.system.mapper.CommodityMapper">
+
+    <select id="selectCommodity" resultType="map">
+        select
+            commodity_id AS commodityId,
+            commodity_name AS commodityName,
+            commodity_img AS commodityImg,
+            commodity_desc AS commodityDesc,
+            grade AS grade,
+            create_time AS createTime,
+            update_time AS updateTime,
+            commodity_status AS commodityStatus
+        from b_commodity
+        where 1=1
+        <if test="name != null and name != ''">
+            and commodity_name like CONCAT('%',#{name},'%'))
+        </if>
+        <if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+            and (create_time between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+        </if>
+    </select>
+
+    <update id="updateStatusById">
+		update b_commodity set commodity_status = #{status},update_time = now() where commodity_id = #{commodityId}
+	</update>
+
+    <select id="selectGoodsInfo" resultType="map">
+        select
+            commodity_id AS commodityId,
+            commodity_name AS commodityName,
+            commodity_img AS commodityImg,
+            grade AS grade,
+            commodity_status AS commodityStatus,
+            #{floorId} AS floorId
+        from b_commodity
+        where
+            commodity_status = 'PUTAWAY'
+    </select>
+
+</mapper>

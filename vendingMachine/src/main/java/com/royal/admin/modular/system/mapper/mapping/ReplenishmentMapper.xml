@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.royal.admin.modular.system.mapper.ReplenishmentMapper">
+
+    <select id="selectReplenishment" resultType="map">
+        SELECT
+	        a.b_id AS id,
+	        a.b_status AS status,
+	        a.b_number AS number,
+	        a.create_time AS createTime,
+	        b.machines_name AS machinesName,
+	        c.display_code floorCode,
+	        d.commodity_name goodsName
+        FROM
+	        b_replenishment a
+        LEFT JOIN b_machines b ON a.machines_id = b.machines_id
+        LEFT JOIN b_floor c ON a.floor_id = c.floor_id
+        LEFT JOIN b_commodity d ON a.goods_id = d.commodity_id
+        <where>
+            <if test="status != null and status != ''">
+                and a.b_status = #{status}
+            </if>
+            <if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+                and (a.create_time between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+            </if>
+        </where>
+    </select>
+</mapper>

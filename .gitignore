@@ -24,3 +24,5 @@ hs_err_pid*
 admin/.idea/
 admin/target/
 *.iml
+.idea/
+vendingMachine/target/

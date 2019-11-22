@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.royal.admin.modular.system.mapper.FloorMapper">
+
+    <select id="selectFloorInfo" resultType="map">
+        SELECT
+	        a.display_code AS displayCode,
+	        a.floor_id AS floorId,
+	        a.floor_code AS floorCode,
+	        a.floor_status AS floorStatus,
+	        a.stock AS stock,
+	        a.create_time AS createTime,
+	        a.update_time AS updateTime,
+	        a.machine_id AS machineId,
+	        a.grade AS grade,
+	        a.goods_id AS goodsId,
+	        b.commodity_name AS commodityName
+        FROM
+	        b_floor a
+        LEFT JOIN b_commodity b ON a.goods_id = b.commodity_id
+        WHERE
+	        a.machine_id = #{machinesId}
+	    order by
+	        displayCode
+    </select>
+
+    <select id="selectDisplayCode" resultType="String">
+        select
+            display_code AS displayCode
+        from b_floor
+        where
+            machine_id = #{machinesId}
+    </select>
+
+    <update id="batchUpdateStatus">
+        update b_floor
+        set floor_status=
+        <foreach collection="zdyFloorList" item="item" index="index" separator=" " open="case" close="end">
+            when display_code=#{item.display_code} then #{item.status}
+        </foreach>
+        where machine_id = #{machinesId}
+    </update>
+
+    <select id="getFloorListBySpfzId" resultType="com.royal.admin.modular.system.entity.Floor">
+        SELECT
+            b.create_time AS createTime,
+            b.display_code AS displayCode,
+            b.floor_code AS floorCode,
+            b.floor_id AS floorId,
+            b.floor_status AS floorStatus,
+            b.goods_id AS goodsId,
+            b.grade AS grade,
+            b.machine_id AS machineId,
+            b.stock,
+            b.update_time AS updateTime
+        FROM
+            b_spfz a
+        LEFT JOIN b_floor b ON INSTR(
+            a.floor_codes,
+            b.display_code
+        )
+        WHERE
+            a.b_id = #{spfzId}
+            AND b.grade &lt;= #{grade}
+        ORDER BY
+            b.grade DESC
+        LIMIT 1
+    </select>
+
+</mapper>

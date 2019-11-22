@@ -1,0 +1,12 @@
+@layout("/common/_container.html",{js:["/assets/modular/operation/machines/floor_list.js"]}){
+
+
+    <table class="layui-table" id="floorTable" lay-filter="floorTable" lay-size="sm"></table>
+
+<script type="text/html" id="tableBar">
+    @if(shiro.hasPermission("/machines/setGoods")){
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="setGoods">商品选择</a>
+    @}
+</script>
+
+@}
