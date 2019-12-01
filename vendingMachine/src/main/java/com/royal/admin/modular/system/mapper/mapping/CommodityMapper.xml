@@ -39,4 +39,55 @@
             commodity_status = 'PUTAWAY'
     </select>
 
+    <select id="selectHistogram" resultType="com.royal.admin.modular.system.model.echarts.XYDate">
+        SELECT
+            COUNT(a.goodId) AS number,
+            a.createTime AS date
+        FROM
+            (
+            SELECT
+	            good_id goodId,
+	            SUBSTR(create_time,1,10) createTime
+            FROM
+	            b_order
+            WHERE
+	            b_status = 5) AS a
+        GROUP BY
+            a.createTime
+        ORDER BY
+            a.createTime
+        LIMIT 10
+    </select>
+
+    <select id="selectPie" resultType="map">
+        SELECT
+	        b.commodity_name AS name,
+	        a.value
+        FROM
+	        (SELECT
+			    good_id,
+			    COUNT(b_id) AS value
+		    FROM
+			    b_order
+		    WHERE
+			    b_status = 5
+			and good_id is not null
+		    GROUP BY
+			    good_id
+	        ) AS a
+        LEFT JOIN b_commodity b ON a.good_id = b.commodity_id
+    </select>
+
+    <select id="selectLine" resultType="map">
+        SELECT
+	        SUBSTR(create_time, 1, 10) AS date,
+	        COUNT(b_id) AS number
+        FROM
+	        b_order
+        GROUP BY
+	        date
+        ORDER BY
+	        date
+    </select>
+
 </mapper>

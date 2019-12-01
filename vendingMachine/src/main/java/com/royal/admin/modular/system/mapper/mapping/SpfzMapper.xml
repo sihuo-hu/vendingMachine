@@ -48,4 +48,30 @@
 			b.grade DESC
 		LIMIT 1
 	</select>
+
+	<select id="getFloorListBySpfzId" resultType="com.royal.admin.modular.system.entity.Floor">
+        SELECT
+            b.create_time AS createTime,
+            b.display_code AS displayCode,
+            b.floor_code AS floorCode,
+            b.floor_id AS floorId,
+            b.floor_status AS floorStatus,
+            b.goods_id AS goodsId,
+            b.grade AS grade,
+            b.machine_id AS machineId,
+            b.stock,
+            b.update_time AS updateTime
+        FROM
+            b_spfz a
+        LEFT JOIN b_floor b ON INSTR(
+            a.floor_codes,
+            b.display_code
+        )
+        WHERE
+            a.b_id = #{spfzId}
+            AND b.grade &lt;= #{grade}
+        ORDER BY
+            b.grade DESC
+        LIMIT 1
+    </select>
 </mapper>

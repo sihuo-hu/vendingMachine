@@ -24,6 +24,7 @@ import com.royal.admin.modular.system.mapper.CommodityMapper;
 import com.royal.admin.modular.system.mapper.SpfzMapper;
 import com.royal.admin.modular.system.mapper.UserMapper;
 import com.royal.admin.modular.system.model.UserDto;
+import com.royal.admin.modular.system.model.echarts.XYDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,11 +88,11 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         spfzQueryWrapper.eq("machines_id", machinesId).orderByAsc("b_id");
         List<Map<String, Object>> list = spfzMapper.selectMaps(spfzQueryWrapper);
         if (list == null || list.size() <= 0) {
-            Spfz spfz1 = new Spfz("一星",machinesId);
-            Spfz spfz2 = new Spfz("二星",machinesId);
-            Spfz spfz3 = new Spfz("三星",machinesId);
-            Spfz spfz4 = new Spfz("四星",machinesId);
-            Spfz spfz5 = new Spfz("五星",machinesId);
+            Spfz spfz1 = new Spfz("一星", machinesId);
+            Spfz spfz2 = new Spfz("二星", machinesId);
+            Spfz spfz3 = new Spfz("三星", machinesId);
+            Spfz spfz4 = new Spfz("四星", machinesId);
+            Spfz spfz5 = new Spfz("五星", machinesId);
             spfzMapper.insert(spfz1);
             spfzMapper.insert(spfz2);
             spfzMapper.insert(spfz3);
@@ -104,7 +105,7 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
 
     public List<Map<String, Object>> getFloor(Integer id) {
         Spfz spfz = spfzMapper.selectById(id);
-        List<Map<String, Object>> list = spfzMapper.selectSpfzAndFloor(id,spfz.getMachinesId());
+        List<Map<String, Object>> list = spfzMapper.selectSpfzAndFloor(id, spfz.getMachinesId());
         return list;
     }
 
@@ -115,4 +116,16 @@ public class CommodityService extends ServiceImpl<CommodityMapper, Commodity> {
         spfzMapper.updateById(spfz);
     }
 
+    public List<XYDate> selectHistogram() {
+        List<XYDate> list = this.baseMapper.selectHistogram();
+        return list;
+    }
+
+    public List<Map<String, Integer>> selectPie() {
+        return this.baseMapper.selectPie();
+    }
+
+    public List<Map<String, Object>> selectLine() {
+        return this.baseMapper.selectLine();
+    }
 }

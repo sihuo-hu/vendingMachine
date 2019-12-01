@@ -24,6 +24,7 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
     Order.initColumn = function () {
         return [[
             {field: 'id', hide: true, title: 'ID'},
+            {field: 'userId', title: '手机号'},
             {field: 'commodityName', title: '商品名称'},
             {field: 'status', title: '状态'},
             {field: 'grade', title: '得分'},

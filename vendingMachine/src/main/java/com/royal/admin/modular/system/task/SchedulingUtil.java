@@ -59,8 +59,7 @@ public class SchedulingUtil {
     }
 
     /**
-     * 结果清算
-     * 1-创建 2-跳舞中 3-结算中 5-已完成 6-已取消 7-出货失败
+     * 1-创建 2-跳舞中 3-结算中 4-体验完成 5-已完成 6-已取消 7-出货失败 8-分数不到标
      */
     @Scheduled(cron = "1/5 * * * * ?")
     public void updateOrder() {

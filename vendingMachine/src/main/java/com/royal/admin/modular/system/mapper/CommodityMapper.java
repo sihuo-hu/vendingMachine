@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.royal.admin.modular.system.entity.Commodity;
 import com.royal.admin.modular.system.entity.User;
+import com.royal.admin.modular.system.model.echarts.XYDate;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -29,4 +30,9 @@ public interface CommodityMapper extends BaseMapper<Commodity> {
 
     List<Map<String, Object>> selectGoodsInfo(@Param("floorId")Integer floorId);
 
+    List<XYDate> selectHistogram();
+
+    List<Map<String, Integer>> selectPie();
+
+    List<Map<String, Object>> selectLine();
 }

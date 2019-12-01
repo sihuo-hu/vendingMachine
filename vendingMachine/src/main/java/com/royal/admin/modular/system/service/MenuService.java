@@ -114,7 +114,8 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
 
         //获取menuId的code
         String code = "";
-        if (menuId != null) {
+        if (menuId != null && menuId != 0) {
+            System.out.println(menuId);
             Menu menu = this.getById(menuId);
             code = menu.getCode();
         }

@@ -20,7 +20,7 @@ public interface FloorMapper extends BaseMapper<Floor> {
 
     List<String> selectDisplayCode(@Param("machinesId") String machinesId);
 
-    void batchUpdateStatus(@Param("zydFloorList") List<ZdyFloor> list, @Param("machinesId") String machineNo);
+    void batchUpdateStatus(@Param("zdyFloorList") List<ZdyFloor> list, @Param("machinesId") String machineNo);
 
     List<Map<String, Object>> selectFloorInfo(@Param("machinesId") String machinesId);
 //

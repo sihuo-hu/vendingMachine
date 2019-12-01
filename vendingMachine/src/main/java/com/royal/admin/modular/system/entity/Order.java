@@ -36,7 +36,7 @@ public class Order implements Serializable {
     @TableField("user_id")
     private String userId;
     /**
-     * 在线状态，1-创建 2-跳舞中 3-结算中  5-已完成 6-已取消 7-出货失败
+     * 在线状态，1-创建 2-跳舞中 3-结算中 4-体验完成 5-已完成 6-已取消 7-出货失败 8-分数不到标
      */
     @TableField("b_status")
     private String status;

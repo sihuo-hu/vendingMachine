@@ -97,6 +97,7 @@ layui.config({
     citypicker: 'city-picker/city-picker',
     tableSelect: 'tableSelect/tableSelect',
     ax: 'ax/ax',
+    echarts: 'echarts/echarts',
     ztree: 'ztree/ztree-object'
 }).use(['admin'], function () {
     var $ = layui.$;

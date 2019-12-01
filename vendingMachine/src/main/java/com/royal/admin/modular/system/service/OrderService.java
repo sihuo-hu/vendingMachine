@@ -106,6 +106,24 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
 
     public Page<Map<String, Object>> selectOrder(String commodityName, String beginTime, String endTime) {
         Page page = LayuiPageFactory.defaultPage();
-        return this.baseMapper.selectOrder(page,commodityName,beginTime,endTime);
+        return this.baseMapper.selectOrder(page, commodityName, beginTime, endTime);
+    }
+
+    /**
+     * 验证今日挑战次数，一天一次（已掉落为准）
+     *
+     * @param userId
+     * @return 掉落过返回false
+     */
+    public boolean verification(String userId) {
+        String date = DateUtils.getFormatDate(new Date());
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId).eq("b_status", "5").between("create_time", date + " 00:00:00", date + " 23:59:59");
+        List<Order> orders = this.baseMapper.selectList(queryWrapper);
+        if (orders != null && orders.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -1,0 +1,35 @@
+@layout("/common/_container.html",{js:["/assets/modular/operation/instrument/list.js"]}){
+<style>
+    .grid-demo-bg1 {
+        height: 25em;
+    }
+
+    .grid-demo-bg2 {
+        height: 25em;
+    }
+
+    .grid-demo-bg4 {
+        height: 25em;
+    }
+</style>
+<div class="layui-body-header">
+    <span class="layui-body-header-title">数据报表</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-xs12 layui-col-md8">
+            <div id="zhu" class="grid-demo grid-demo-bg1">移动：8/12、桌面：8/12</div>
+        </div>
+        <div class="layui-col-xs6 layui-col-md4">
+            <div id="bin" class="grid-demo grid-demo-bg2">移动：4/12、桌面：4/12</div>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-col-xs12 layui-col-md12">
+            <div id="xian" class="grid-demo grid-demo-bg4">移动：6/12、桌面：12/12</div>
+        </div>
+    </div>
+</div>
+
+@}

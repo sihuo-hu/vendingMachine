@@ -5,8 +5,10 @@ import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.royal.admin.core.shiro.ShiroKit;
 import com.royal.admin.core.shiro.ShiroUser;
+import com.royal.admin.core.util.AliyunSMSUtils;
 import com.royal.admin.core.util.ImageAnd64Binary;
 import com.royal.admin.core.util.JwtTokenUtil;
+import com.royal.admin.core.util.Tools;
 import com.royal.admin.modular.system.entity.*;
 import com.royal.admin.modular.system.mapper.UserMapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -48,6 +50,8 @@ public class ApiController extends BaseController {
     private OrderService orderService;
     @Autowired
     private MountingsService mountingsService;
+    @Autowired
+    private VerificationService verificationService;
 
     @RequestMapping("/not/a")
     @ResponseBody
@@ -57,11 +61,38 @@ public class ApiController extends BaseController {
         return ResponseData.success(bdyResult);
     }
 
+    @RequestMapping("/not/getVerification")
+    @ResponseBody
+    public Object getVerification(@RequestParam("phone") String phone) {
+        Verification verification = verificationService.getByPhoneAndDate(phone);
+        if (verification == null) {
+            String code = Tools.getRandomCode(6, 0);
+            if (AliyunSMSUtils.sendVerification(phone, code)) {
+                verification = new Verification();
+                verification.setCode(code);
+                verification.setPhone(phone);
+                verification.setType(1);
+                verificationService.save(verification);
+            } else {
+                return ResponseData.error(105, "发送失败");
+            }
+        } else {
+            return ResponseData.error(106, "请勿重复点击");
+        }
+        return ResponseData.success();
+    }
+
     @RequestMapping("/not/getGoods")
     @ResponseBody
-    public Object getGoods(@RequestParam("machinesId") String machinesId) {
-        List<GoodsList> list = spfzService.fzList(machinesId);
-        return ResponseData.success(list);
+    public Object getGoods(@RequestParam("machinesId") String machinesId, @RequestParam("phone") String phone, @RequestParam("code") String code) {
+        if (verificationService.verification(phone, code)) {
+            verificationService.deleteByPhone(phone);
+            List<GoodsList> list = spfzService.fzList(machinesId);
+            return ResponseData.success(list);
+        } else {
+            return ResponseData.error(106, "验证码错误");
+        }
+
     }
 
     @RequestMapping("/not/submitSpfz")
@@ -110,13 +141,15 @@ public class ApiController extends BaseController {
         if (order == null) {
             return ResponseData.error(201, "当前没有人扫码");
         } else if (order.getStatus().equals("1")) {
+            order.setStatus("2");
+            orderService.updateById(order);
             Spfz spfz = spfzService.getById(order.getSpfzId());
             return ResponseData.success(spfz.getDifficulty());
         } else if (order.getStatus().equals("2")) {
             return ResponseData.error(202, "还在跳舞中");
         } else if (order.getStatus().equals("3")) {
             return ResponseData.error(203, "结算中");
-        }  else if (order.getStatus().equals("5")) {
+        } else if (order.getStatus().equals("5")) {
             return ResponseData.error(205, "当前没有人扫码");
         } else if (order.getStatus().equals("6")) {
             return ResponseData.error(206, "当前没有人扫码");
@@ -137,19 +170,27 @@ public class ApiController extends BaseController {
             return ResponseData.error(201, "未找到对应信息");
         } else if (order.getStatus().equals("2")) {
             order.setGrade(grade);
-            //计算商品-----------
-            Floor floor = spfzService.getFloorListBySpfzId(order.getSpfzId(), grade);
-            if (floor == null) {
-                order.setStatus("5");
+            if (orderService.verification(order.getUserId())) {
+                //计算商品-----------
+                Floor floor = spfzService.getFloorListBySpfzId(order.getSpfzId(), grade);
+                if (floor == null) {
+                    order.setStatus("8");
+                    orderService.updateById(order);
+                    return ResponseData.error(103, "请继续努力，下次会有更好成绩");
+                }
+                order.setGoodId(floor.getGoodsId());
+                order.setStatus("3");
                 orderService.updateById(order);
-                return ResponseData.error(103, "请继续努力，下次会有更好成绩");
+                //调用出货接口-----------
+                orderService.specifiedCodeDelivery(floor.getFloorCode(), order);
+                return ResponseData.success();
+            } else {
+                order.setStatus("4");
+                orderService.updateById(order);
+                return ResponseData.error(109, "今天你已经获得过奖品");
             }
-            order.setGoodId(floor.getGoodsId());
-            order.setStatus("3");
-            orderService.updateById(order);
-            //调用出货接口-----------
-            orderService.specifiedCodeDelivery(floor.getFloorCode(),order);
-            return ResponseData.success();
+
+
         } else {
             return ResponseData.error(201, "未找到对应信息");
         }
@@ -182,7 +223,7 @@ public class ApiController extends BaseController {
             }
         } else if (order.getStatus().equals("3")) {
             if (order.getUserId().equals(userId)) {
-                return ResponseData.success(1,"得分为",order.getGrade());
+                return ResponseData.success(1, "得分为", order.getGrade());
             } else {
                 return ResponseData.error(202, "设备正在使用中");
             }
