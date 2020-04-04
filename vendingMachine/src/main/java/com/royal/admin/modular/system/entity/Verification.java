@@ -14,7 +14,7 @@ import java.util.Date;
  * @author stylefeng
  * @since 2018-12-07
  */
-@TableName("b_commodity")
+@TableName("b_verification")
 @Data
 public class Verification implements Serializable {
 
