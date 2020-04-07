@@ -45,11 +45,13 @@ public class ThreadPoolUtil {
                     ZdyOrder zdyOrder = (ZdyOrder) z.getData();
                     if (zdyOrder.getOrder_status() == 2) {
                         order.setStatus("5");
+                        order.setSelectStatus(3);
                         order.setDeliverNote(zdyOrder.getDeliver_note());
                         orderService.updateById(order);
                     } else if (zdyOrder.getOrder_status() == 3) {
                         order.setDeliverNote(zdyOrder.getDeliver_note());
                         order.setStatus("7");
+                        order.setSelectStatus(3);
                         orderService.updateById(order);
                     }
                 }

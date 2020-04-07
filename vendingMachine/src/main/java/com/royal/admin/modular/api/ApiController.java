@@ -35,6 +35,7 @@ import java.util.List;
  * @Date 2018/7/20 23:39
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/gunsApi")
 public class ApiController extends BaseController {
 
@@ -61,6 +62,12 @@ public class ApiController extends BaseController {
         return ResponseData.success(bdyResult);
     }
 
+    /**
+     * H5调的第一个接口，获取验证码
+     *
+     * @param phone
+     * @return
+     */
     @RequestMapping("/not/getVerification")
     @ResponseBody
     public Object getVerification(@RequestParam("phone") String phone) {
@@ -105,7 +112,7 @@ public class ApiController extends BaseController {
         }
 
         QueryWrapper<Order> orderQueryWrapper = new QueryWrapper<>();
-        orderQueryWrapper.in("b_status", "1", "2", "3", "4").eq("machines_id", machines.getMachinesId());
+        orderQueryWrapper.in("b_status", "1", "2", "3").eq("machines_id", machines.getMachinesId());
         Order order = orderService.getOne(orderQueryWrapper);
         if (order != null) {
             return ResponseData.error(101, "有人正在挑战，请稍后再试");
@@ -126,6 +133,7 @@ public class ApiController extends BaseController {
     }
 
     /**
+     * 获取当前跳舞机状态
      * 1-创建 2-跳舞中 3-结算中 4-出货中 5-已完成 6-已取消 7-出货失败
      *
      * @param mountingsCode
@@ -206,7 +214,6 @@ public class ApiController extends BaseController {
     @ResponseBody
     public Object getH5Status(@RequestParam("mountingsId") Integer mountingsId, String userId) {
         Order order = orderService.selectRecentlyOne(mountingsId);
-        System.out.println(order.toString());
         if (order == null) {
             return ResponseData.error(201, "请重新扫码");
         } else if (order.getStatus().equals("1")) {
@@ -227,11 +234,13 @@ public class ApiController extends BaseController {
             } else {
                 return ResponseData.error(202, "设备正在使用中");
             }
+        } else if (order.getStatus().equals("4") && order.getUserId().equals(userId)) {
+            return ResponseData.success(1, "得分为", order.getGrade());
         } else if (order.equals("5")) {
             if (order.getUserId().equals(userId)) {
                 return ResponseData.success("已完成");
             } else {
-                return ResponseData.error(202, "设备正在使用中");
+                return ResponseData.success();
             }
         } else if (order.getStatus().equals("6")) {
             return ResponseData.error(201, "请重新扫码");

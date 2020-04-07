@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 商品控制器
+ * 数据报表
  *
  * @author fengshuonan
  * @Date 2017年1月11日 下午1:08:17
@@ -74,7 +74,7 @@ public class InstrumentController extends BaseController {
     }
 
     /**
-     * 查询管理员列表
+     * 柱状图
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:43

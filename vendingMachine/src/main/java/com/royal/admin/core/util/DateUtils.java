@@ -221,7 +221,7 @@ public class DateUtils {
     /**
      * 获得指定秒后的时间
      * @param curDate
-     * @param second
+     * @param second 负数为当前时间以前，如现在1:30，那么填-10，返回的就是1:20
      * @return
      */
     public static Date getDateBeforeOrAfterSecond(Date curDate, int second) {

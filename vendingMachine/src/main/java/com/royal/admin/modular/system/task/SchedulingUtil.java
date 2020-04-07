@@ -66,15 +66,15 @@ public class SchedulingUtil {
         String methodName = new Throwable().getStackTrace()[0].getMethodName();
         log.info(methodName + "定时任务开始======》当前时间：" + DateUtils.getCurrDateTimeStr());
         Date date = new Date();
-        //订单刚创建1，60秒没有变化，则变为5已取消
+        //订单刚创建1，60秒没有变化，则变为6已取消
         Date createTime = DateUtils.getDateBeforeOrAfterMinute(date, -1);
         orderService.updateByCreateTime(createTime, "1", "6");
-        //跳舞中，XX秒没变化则，变为5
+        //跳舞中，XX秒没变化则，变为6
         Date updateTime = DateUtils.getDateBeforeOrAfterMinute(date, -2);
         orderService.updateByUpdate(updateTime, "2", "6");
         //结算中，60秒没有变化则变为7
-        updateTime = DateUtils.getDateBeforeOrAfterMinute(date, -1);
-        orderService.updateByUpdate(updateTime, "3", "6");
+        updateTime = DateUtils.getDateBeforeOrAfterMinute(date, -2);
+        orderService.updateByUpdate(updateTime, "3", "7");
         log.info(methodName + "定时任务结束======》当前时间：" + DateUtils.getCurrDateTimeStr());
     }
 

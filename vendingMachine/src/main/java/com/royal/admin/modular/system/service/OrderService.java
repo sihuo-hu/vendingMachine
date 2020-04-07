@@ -61,6 +61,7 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
     public void selectZdyOrder() {
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         Date updateTime = DateUtils.getDateBeforeOrAfterSecond(new Date(), -10);
+        //订单变成结算中10秒以后将被查询出来
         queryWrapper.eq("b_status", "3").lt("update_time", updateTime).eq("select_status", 1);
         List<Order> orders = this.baseMapper.selectList(queryWrapper);
         if (orders != null && orders.size() > 0) {
@@ -98,7 +99,7 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         } else {
             order.setStatus("3");
             order.setOrderNo(((ZdySubmitOrder) z.getData()).getOrder_no());
-            order.setDeliverNote(z.getMsg());
+            order.setDeliverNote("出货中");
             this.updateById(order);
         }
 
@@ -125,5 +126,16 @@ public class OrderService extends ServiceImpl<OrderMapper, Order> {
         } else {
             return true;
         }
+    }
+
+    public static void main(String[] args) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put("order_no", "8662620405236631585980021229");
+        String sign = ZdySignUtil.getSign(param);
+        param.put("sign", sign);
+        HashMap<String, String> headerMap = new HashMap<>();
+        headerMap.put("appid", com.royal.admin.core.common.constant.state.ZdyMachines.APPID.getMessage());
+        String s = HttpUtils.doGet(com.royal.admin.core.common.constant.state.ZdyMachines.SELECT_ORDER_URL.getMessage(), param, headerMap);
+        System.out.println(s);
     }
 }
