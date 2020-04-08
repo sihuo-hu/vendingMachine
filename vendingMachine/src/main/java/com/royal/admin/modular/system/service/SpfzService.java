@@ -26,21 +26,26 @@ import java.util.Map;
 public class SpfzService extends ServiceImpl<SpfzMapper, Spfz> {
 
     public List<GoodsList> fzList(String machinesId) {
-        List<GoodsList> list = new ArrayList<>();
-        GoodsList commodity1 = this.baseMapper.fzList(machinesId,"一星");
-        GoodsList commodity2 = this.baseMapper.fzList(machinesId,"二星");
-        GoodsList commodity3 = this.baseMapper.fzList(machinesId,"三星");
-        GoodsList commodity4 = this.baseMapper.fzList(machinesId,"四星");
-        GoodsList commodity5 = this.baseMapper.fzList(machinesId,"五星");
-        list.add(commodity1);
-        list.add(commodity2);
-        list.add(commodity3);
-        list.add(commodity4);
-        list.add(commodity5);
+        List<GoodsList> list = this.baseMapper.fzList(machinesId);
+        if (!list.isEmpty() && list.size() > 0) {
+            for (GoodsList goodsList : list) {
+                if ("一星".equals(goodsList.getDifficulty())) {
+                    goodsList.setDifficulty("1");
+                } else if ("二星".equals(goodsList.getDifficulty())) {
+                    goodsList.setDifficulty("2");
+                } else if ("三星".equals(goodsList.getDifficulty())) {
+                    goodsList.setDifficulty("3");
+                } else if ("四星".equals(goodsList.getDifficulty())) {
+                    goodsList.setDifficulty("4");
+                } else if ("五星".equals(goodsList.getDifficulty())) {
+                    goodsList.setDifficulty("5");
+                }
+            }
+        }
         return list;
     }
 
-    public Floor getFloorListBySpfzId(Integer spfzId,Integer grade) {
-        return this.baseMapper.getFloorListBySpfzId(spfzId,grade);
+    public Floor getFloorListBySpfzId(Integer spfzId, Integer grade) {
+        return this.baseMapper.getFloorListBySpfzId(spfzId, grade);
     }
 }

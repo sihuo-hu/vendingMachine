@@ -50,10 +50,15 @@ public class Floor implements Serializable {
     @TableField("machine_id")
     private String machineId;
     /**
-     * 所需最低积分
+     * 所需积分
      */
     @TableField("grade")
     private Integer grade;
+    /**
+     * 货道名称
+     */
+    @TableField("floor_name")
+    private String floorName;
     /**
      * 商品ID
      */

@@ -43,8 +43,8 @@ public class Order implements Serializable {
     /**
      * 经度
      */
-    @TableField("spfz_id")
-    private Integer spfzId;
+    @TableField("floor_id")
+    private Integer floorId;
     /**
      * 纬度
      */

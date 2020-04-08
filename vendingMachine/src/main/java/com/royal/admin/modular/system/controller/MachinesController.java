@@ -61,7 +61,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 系统管理员控制器
+ * 系统设备控制器
  *
  * @author fengshuonan
  * @Date 2017年1月11日 下午1:08:17
@@ -224,6 +224,22 @@ public class MachinesController extends BaseController {
     }
 
     /**
+     * 清除商品
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:44
+     */
+    @RequestMapping("/clearGoods")
+    @ResponseBody
+    public ResponseData clearGoods(@RequestParam Integer floorId) {
+        if (ToolUtil.isAllEmpty(floorId)) {
+            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+        }
+        this.floorService.clearGoods(floorId);
+        return SUCCESS_TIP;
+    }
+
+    /**
      * 设置库存或积分
      *
      * @author fengshuonan
@@ -231,12 +247,12 @@ public class MachinesController extends BaseController {
      */
     @RequestMapping("/setGradeOrStock")
     @ResponseBody
-    public ResponseData setGradeOrStock(@RequestParam Integer grade,@RequestParam Integer stock,@RequestParam Integer floorId) {
-        if (ToolUtil.isEmpty(floorId)&&ToolUtil.isAllEmpty(grade,stock)) {
+    public ResponseData setGradeOrStock(@RequestParam String floorName,@RequestParam Integer stock,@RequestParam Integer floorId,@RequestParam Integer grade) {
+        if (ToolUtil.isEmpty(floorId)&&ToolUtil.isAllEmpty(floorName,stock,grade)) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
 
-        this.floorService.updateGradeOrStock(floorId, grade,stock);
+        this.floorService.updateGradeOrStock(floorName,stock,floorId,grade);
         return SUCCESS_TIP;
     }
 

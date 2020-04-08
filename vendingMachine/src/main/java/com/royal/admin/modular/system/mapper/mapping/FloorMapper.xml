@@ -8,6 +8,7 @@
 	        a.floor_id AS floorId,
 	        a.floor_code AS floorCode,
 	        a.floor_status AS floorStatus,
+	        a.floor_name AS floorName,
 	        a.stock AS stock,
 	        a.create_time AS createTime,
 	        a.update_time AS updateTime,

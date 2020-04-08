@@ -6,7 +6,7 @@
         SELECT
 	        b_id AS id,
 	        user_id AS userId,
-	        spfz_id AS spfzId,
+	        floor_id AS floorId,
 	        good_id AS goodId,
 	        b_status AS STATUS,
 	        create_time AS createTime,

@@ -4,9 +4,11 @@ import com.royal.admin.core.util.HttpUtils;
 import com.royal.admin.core.util.JSONUtils;
 import com.royal.admin.core.util.SpringContextUtils;
 import com.royal.admin.core.util.ZdySignUtil;
+import com.royal.admin.modular.system.entity.Floor;
 import com.royal.admin.modular.system.entity.Order;
 import com.royal.admin.modular.system.model.zdy.ZdyOrder;
 import com.royal.admin.modular.system.model.zdy.ZdyReturn;
+import com.royal.admin.modular.system.service.FloorService;
 import com.royal.admin.modular.system.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,7 @@ public class ThreadPoolUtil {
             public void run() {
                 OrderService orderService = (OrderService) SpringContextUtils.getBean(
                         "orderService");
+
                 for (Order order : orders) {
                     HashMap<String, String> param = new HashMap<>();
                     param.put("order_no", order.getOrderNo());
@@ -44,10 +47,15 @@ public class ThreadPoolUtil {
                     }
                     ZdyOrder zdyOrder = (ZdyOrder) z.getData();
                     if (zdyOrder.getOrder_status() == 2) {
+                        FloorService floorService = (FloorService) SpringContextUtils.getBean(
+                                "floorService");
                         order.setStatus("5");
                         order.setSelectStatus(3);
                         order.setDeliverNote(zdyOrder.getDeliver_note());
                         orderService.updateById(order);
+                        Floor floor = floorService.getById(order.getFloorId());
+                        floor.setStock(floor.getStock()-1);
+                        floorService.updateById(floor);
                     } else if (zdyOrder.getOrder_status() == 3) {
                         order.setDeliverNote(zdyOrder.getDeliver_note());
                         order.setStatus("7");

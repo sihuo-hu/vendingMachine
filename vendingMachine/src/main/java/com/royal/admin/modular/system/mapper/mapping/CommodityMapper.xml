@@ -11,7 +11,8 @@
             grade AS grade,
             create_time AS createTime,
             update_time AS updateTime,
-            commodity_status AS commodityStatus
+            commodity_status AS commodityStatus,
+            difficulty AS difficulty
         from b_commodity
         where 1=1
         <if test="name != null and name != ''">
@@ -31,6 +32,7 @@
             commodity_id AS commodityId,
             commodity_name AS commodityName,
             commodity_img AS commodityImg,
+            difficulty AS difficulty,
             grade AS grade,
             commodity_status AS commodityStatus,
             #{floorId} AS floorId

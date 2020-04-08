@@ -101,7 +101,7 @@ public class FloorService extends ServiceImpl<FloorMapper, Floor> {
         this.baseMapper.updateById(floor);
     }
 
-    public void updateGradeOrStock(Integer floorId, Integer grade, Integer stock) {
+    public void updateGradeOrStock(String floorName, Integer stock, Integer floorId, Integer grade) {
         Floor floor = this.baseMapper.selectById(floorId);
         if (floor.getStock() != stock) {
             Replenishment replenishment = new Replenishment();
@@ -109,17 +109,24 @@ public class FloorService extends ServiceImpl<FloorMapper, Floor> {
             replenishment.setGoodsId(floor.getGoodsId());
             replenishment.setMachinesId(floor.getMachineId());
             if (floor.getStock() < stock) {
-                replenishment.setNumber(stock-floor.getStock());
+                replenishment.setNumber(stock - floor.getStock());
                 replenishment.setStatus("REOLENISH");
-            }else{
-                replenishment.setNumber(floor.getStock()-stock);
+            } else {
+                replenishment.setNumber(floor.getStock() - stock);
                 replenishment.setStatus("WITHDRAW");
             }
             replenishmentService.save(replenishment);
         }
-        floor.setGrade(grade);
+        floor.setFloorName(floorName);
         floor.setStock(stock);
-        System.out.println(floor.toString());
+        floor.setGrade(grade);
+        this.baseMapper.updateById(floor);
+    }
+
+    public void clearGoods(Integer floorId) {
+        Floor floor = this.baseMapper.selectById(floorId);
+        floor.setGoodsId("");
+        floor.setGrade(0);
         this.baseMapper.updateById(floor);
     }
 }

@@ -11,8 +11,20 @@
     <div class="layui-form-item">
         <label class="layui-form-label">达标分数<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input name="grade" placeholder="请输入最低达标分数" type="number" class="layui-input" lay-verify="required"
+            <input name="grade" placeholder="请输入达标分数" type="number" class="layui-input" lay-verify="required"
                    style="width: 200px;" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">难度<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select id="difficulty" name="difficulty">
+                <option value="一星">一星</option>
+                <option value="二星">二星</option>
+                <option value="三星">三星</option>
+                <option value="四星">四星</option>
+                <option value="五星">五星</option>
+            </select>
         </div>
     </div>
     <input id="commodityImg" name="commodityImg" type="hidden"/>

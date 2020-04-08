@@ -5,16 +5,15 @@ import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.royal.admin.core.shiro.ShiroKit;
 import com.royal.admin.core.shiro.ShiroUser;
-import com.royal.admin.core.util.AliyunSMSUtils;
-import com.royal.admin.core.util.ImageAnd64Binary;
-import com.royal.admin.core.util.JwtTokenUtil;
-import com.royal.admin.core.util.Tools;
+import com.royal.admin.core.util.*;
 import com.royal.admin.modular.system.entity.*;
 import com.royal.admin.modular.system.mapper.UserMapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ErrorResponseData;
 import com.royal.admin.modular.system.model.GoodsList;
 import com.royal.admin.modular.system.model.baiduyun.BdyResult;
+import com.royal.admin.modular.system.model.zdy.ZdyReturn;
+import com.royal.admin.modular.system.model.zdy.ZdySubmitOrder;
 import com.royal.admin.modular.system.service.*;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -46,6 +45,8 @@ public class ApiController extends BaseController {
     @Autowired
     private SpfzService spfzService;
     @Autowired
+    private FloorService floorService;
+    @Autowired
     private MachinesService machinesService;
     @Autowired
     private OrderService orderService;
@@ -53,13 +54,23 @@ public class ApiController extends BaseController {
     private MountingsService mountingsService;
     @Autowired
     private VerificationService verificationService;
+    @Autowired
+    private CommodityService commodityService;
 
     @RequestMapping("/not/a")
     @ResponseBody
-    public Object sss(@RequestParam("videoUrl") String videoUrl) {
-        String a = ImageAnd64Binary.getImageStr(videoUrl);
-        BdyResult bdyResult = fachRecognitionService.detect(a);
-        return ResponseData.success(bdyResult);
+    public Object sss(@RequestParam("code") String code,@RequestParam("machineId") String machineId) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put("machine_no", machineId);
+        param.put("code", code);
+        param.put("out_trade_no", "cdxpz" + Tools.getUUId());
+        String sign = ZdySignUtil.getSign(param);
+        param.put("sign", sign);
+        HashMap<String, String> headerMap = new HashMap<>();
+        headerMap.put("appid", com.royal.admin.core.common.constant.state.ZdyMachines.APPID.getMessage());
+        String s = HttpUtils.doPost(com.royal.admin.core.common.constant.state.ZdyMachines.PLACE_AN_ORDER_URL.getMessage(), param, headerMap);
+        ZdyReturn z = JSONUtils.toBean(s, ZdyReturn.class, "data", ZdySubmitOrder.class);
+        return ResponseData.success(z);
     }
 
     /**
@@ -105,8 +116,8 @@ public class ApiController extends BaseController {
     @RequestMapping("/not/submitSpfz")
     @ResponseBody
     public Object submitSpfz(@RequestParam("id") Integer id, @RequestParam("userId") String userId) {
-        Spfz spfz = spfzService.getById(id);
-        Machines machines = machinesService.getById(spfz.getMachinesId());
+        Floor floor = floorService.getById(id);
+        Machines machines = machinesService.getById(floor.getMachineId());
         if (!machines.getOnlineStatus().equals("ENABLE")) {
             return ResponseData.error(100, "跳舞机正在休息中，请稍后再试");
         }
@@ -124,7 +135,7 @@ public class ApiController extends BaseController {
 
         order = new Order();
         order.setMachinesId(machines.getMachinesId());
-        order.setSpfzId(id);
+        order.setFloorId(id);
         order.setStatus("1");
         order.setMountingsId(mountings.getId());
         order.setUserId(userId);
@@ -151,8 +162,9 @@ public class ApiController extends BaseController {
         } else if (order.getStatus().equals("1")) {
             order.setStatus("2");
             orderService.updateById(order);
-            Spfz spfz = spfzService.getById(order.getSpfzId());
-            return ResponseData.success(spfz.getDifficulty());
+            Floor floor = floorService.getById(order.getFloorId());
+            Commodity commodity = commodityService.getById(floor.getGoodsId());
+            return ResponseData.success(commodity.getDifficulty());
         } else if (order.getStatus().equals("2")) {
             return ResponseData.error(202, "还在跳舞中");
         } else if (order.getStatus().equals("3")) {
@@ -180,8 +192,8 @@ public class ApiController extends BaseController {
             order.setGrade(grade);
             if (orderService.verification(order.getUserId())) {
                 //计算商品-----------
-                Floor floor = spfzService.getFloorListBySpfzId(order.getSpfzId(), grade);
-                if (floor == null) {
+                Floor floor = floorService.getById(order.getFloorId());
+                if (floor.getGrade() > grade) {
                     order.setStatus("8");
                     orderService.updateById(order);
                     return ResponseData.error(103, "请继续努力，下次会有更好成绩");

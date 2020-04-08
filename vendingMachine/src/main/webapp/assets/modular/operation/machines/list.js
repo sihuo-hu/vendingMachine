@@ -98,7 +98,7 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
         top.layui.admin.open({
             type: 2,
             title: '设置商品',
-            area: ['920px','650px'],
+            area: ['1120px','650px'],
             content: Feng.ctxPath + '/machines/to_get_goods?machinesId='+data.machinesId,
             end: function () {
                 admin.getTempData('formOk');
@@ -165,9 +165,6 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
 
         if (layEvent === 'getFloor') {
             Machines.onGetFloor(data);
-        }
-        if (layEvent === 'bindingFloor') {
-            Machines.onBindingFloor(data);
         }
     });
 

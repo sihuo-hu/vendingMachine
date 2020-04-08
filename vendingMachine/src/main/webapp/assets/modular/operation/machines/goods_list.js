@@ -22,7 +22,7 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
             {field: 'floorId', hide: true,title: '通道ID'},
             {field: 'commodityId',hide: true, title: '商品ID'},
             {field: 'commodityName', title: '商品名称'},
-            {field: 'commodityImg', title: '商品图片'},
+            {field: 'difficulty', title: '难度'},
             {field: 'grade',hide: true, title: '所需分数'},
             {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 80}
         ]];

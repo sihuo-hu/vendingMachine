@@ -8,7 +8,7 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
     var admin = layui.admin;
 
     /**
-     * 系统管理--用户管理
+     * 补货记录
      */
     var replenishment = {
         tableId: "replenishmentTable",    //表格id
@@ -25,7 +25,7 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
         return [[
             {field: 'b_id', hide: true, title: 'ID'},
             {field: 'status', title: '类别'},
-            {field: 'goodsName', title: '类别'},
+            {field: 'goodsName', title: '商品'},
             {field: 'number', title: '数量'},
             {field: 'floorCode', title: '货道编码'},
             {field: 'machinesName', title: '设备名称'},

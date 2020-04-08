@@ -36,9 +36,6 @@
     @if(shiro.hasPermission("/machines/getFloor")){
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="getFloor">商品设置</a>
     @}
-    @if(shiro.hasPermission("/machines/bindingFloor")){
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="bindingFloor">商品分组</a>
-    @}
 </script>
 <script type="text/html" id="statusTpl">
     <input type="checkbox" lay-filter="status" value="{{d.machinesId}}" lay-skin="switch" lay-text="在线|离线" {{d.onlineStatus=='ENABLE'?'checked':''}} />

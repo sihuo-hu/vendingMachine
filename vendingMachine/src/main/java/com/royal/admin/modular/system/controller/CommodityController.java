@@ -76,7 +76,7 @@ public class CommodityController extends BaseController {
     private ReplenishmentService replenishmentService;
 
     /**
-     * 跳转到查看管理员列表的页面
+     * 跳转到查看商品列表的页面
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:43
@@ -87,7 +87,7 @@ public class CommodityController extends BaseController {
     }
 
     /**
-     * 查询管理员列表
+     * 查询商品列表
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:43
@@ -212,7 +212,7 @@ public class CommodityController extends BaseController {
 
 
     /**
-     * 冻结用户
+     * 下架
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:44
@@ -228,7 +228,7 @@ public class CommodityController extends BaseController {
     }
 
     /**
-     * 解除冻结用户
+     * 上架
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:44
@@ -244,7 +244,7 @@ public class CommodityController extends BaseController {
     }
 
     /**
-     * 跳转到编辑商品页面
+     * 跳转到补货记录页面
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:43
@@ -255,7 +255,7 @@ public class CommodityController extends BaseController {
     }
 
     /**
-     * 查询管理员列表
+     * 查询补货记录列表
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:43

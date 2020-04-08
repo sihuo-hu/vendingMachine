@@ -7,6 +7,9 @@
     @if(shiro.hasPermission("/machines/setGoods")){
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="setGoods">商品选择</a>
     @}
+    @if(shiro.hasPermission("/machines/clearGoods")){
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="clearGoods">清除商品</a>
+    @}
 </script>
 
 @}

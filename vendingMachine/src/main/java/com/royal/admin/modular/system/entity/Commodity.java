@@ -46,6 +46,11 @@ public class Commodity implements Serializable {
     @TableField("commodity_status")
     private String commodityStatus;
     /**
+     * 难度
+     */
+    @TableField("difficulty")
+    private String difficulty;
+    /**
      * 商品所需分数
      */
     @TableField("grade")

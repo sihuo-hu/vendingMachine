@@ -23,7 +23,7 @@ public interface SpfzMapper extends BaseMapper<Spfz> {
 
     List<Map<String, Object>> selectSpfzAndFloor(@Param("id") Integer id,@Param("machinesId") String machinesId);
 
-    GoodsList fzList(@Param("machinesId")String machinesId, @Param("difficulty")String difficulty);
+    List<GoodsList> fzList(@Param("machinesId")String machinesId);
 
     Floor getFloorListBySpfzId(@Param("spfzId") Integer spfzId,@Param("grade") Integer grade);
 }

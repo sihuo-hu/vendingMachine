@@ -28,25 +28,21 @@
 
 	<select id="fzList" resultType="com.royal.admin.modular.system.model.GoodsList">
 		SELECT
-			a.difficulty,
-			a.b_id AS id,
-			c.commodity_img AS commodityImg,
-			c.commodity_name AS commodityName,
-			c.commodity_desc AS commodityDesc
+			b.difficulty,
+			a.floor_id AS id,
+			b.commodity_img AS commodityImg,
+			b.commodity_name AS commodityName,
+			a.floor_name AS commodityDesc
 		FROM
-			b_spfz a
-		LEFT JOIN b_floor b ON INSTR(
-			a.floor_codes,
-			b.display_code
-		)
-		LEFT JOIN b_commodity c ON b.goods_id = c.commodity_id
+			b_floor a
+		LEFT JOIN b_commodity b ON a.goods_id = b.commodity_id
 		WHERE
-			a.machines_id = #{machinesId}
-		AND a.difficulty = #{difficulty}
-		AND b.floor_id IS NOT NULL
+			a.machine_id = #{machinesId}
+		AND a.goods_id IS NOT NULL
+		AND a.floor_name IS NOT NULL
+		AND b.difficulty IS NOT NULL
 		ORDER BY
-			b.grade DESC
-		LIMIT 1
+			a.floor_name
 	</select>
 
 	<select id="getFloorListBySpfzId" resultType="com.royal.admin.modular.system.entity.Floor">
