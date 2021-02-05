@@ -61,7 +61,7 @@ public class SchedulingUtil {
     /**
      * 1-创建 2-跳舞中 3-结算中 4-体验完成 5-已完成 6-已取消 7-出货失败 8-分数不到标
      */
-    @Scheduled(cron = "1/5 * * * * ?")
+//    @Scheduled(cron = "1/5 * * * * ?")
     public void updateOrder() {
         String methodName = new Throwable().getStackTrace()[0].getMethodName();
         log.info(methodName + "定时任务开始======》当前时间：" + DateUtils.getCurrDateTimeStr());
@@ -78,7 +78,7 @@ public class SchedulingUtil {
         log.info(methodName + "定时任务结束======》当前时间：" + DateUtils.getCurrDateTimeStr());
     }
 
-    @Scheduled(cron = "1/10 * * * * ?")
+//    @Scheduled(cron = "1/10 * * * * ?")
     public void selectOrder() {
         String methodName = new Throwable().getStackTrace()[0].getMethodName();
         log.info(methodName + "定时任务开始======》当前时间：" + DateUtils.getCurrDateTimeStr());

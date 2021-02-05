@@ -2,6 +2,7 @@
 package com.royal.admin.modular.api;
 
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
+import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.royal.admin.core.shiro.ShiroKit;
 import com.royal.admin.core.shiro.ShiroUser;
@@ -11,6 +12,7 @@ import com.royal.admin.modular.system.mapper.UserMapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ErrorResponseData;
 import com.royal.admin.modular.system.model.GoodsList;
+import com.royal.admin.modular.system.model.ParaResult;
 import com.royal.admin.modular.system.model.baiduyun.BdyResult;
 import com.royal.admin.modular.system.model.zdy.ZdyReturn;
 import com.royal.admin.modular.system.model.zdy.ZdySubmitOrder;
@@ -56,6 +58,24 @@ public class ApiController extends BaseController {
     private VerificationService verificationService;
     @Autowired
     private CommodityService commodityService;
+
+    @RequestMapping("/not/test")
+    @ResponseBody
+    public Object test(@RequestBody ParaResult result) {
+        if(result.getOrg_info()!=null&& ToolUtil.isNotEmpty(result.getOrg_info())){
+            System.out.println("收到了组织数据："+JSONUtils.toJSONObject(result).toString());
+            return ResponseData.success();
+        }
+        if(result.getPerson_info()!=null&& ToolUtil.isNotEmpty(result.getPerson_info())){
+            System.out.println("收到了用户数据："+JSONUtils.toJSONObject(result).toString());
+            return ResponseData.success();
+        }
+        if(result.getJob_info()!=null&& ToolUtil.isNotEmpty(result.getJob_info())){
+            System.out.println("收到了岗位数据："+JSONUtils.toJSONObject(result).toString());
+            return ResponseData.success();
+        }
+        return ResponseData.error("我错了");
+    }
 
     @RequestMapping("/not/a")
     @ResponseBody
